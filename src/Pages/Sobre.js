@@ -18,6 +18,20 @@ export default function Sobre() {
                 console.error("Erro ao buscar contatos", error)
             })
     }
+    // Função para excluir um contato
+    const deleteContato = (id) => {
+        axios
+            .delete(`http://10.0.2.2:3000/contatos/${id}`)
+            .then(() => {
+                // Atualizar a lista de contato
+                setContatos(contatos.filter((contato) => contato.id !== id));
+                Alert.alert("Contato excluído com sucesso!");
+            })
+            .catch((error) => {
+                console.error("Erro ao excluir contato", error);
+                Alert.alert("Erro! Não foi possível excluir")
+            })
+    };
 
     // useEffect para buscar dados 
     useEffect(() => {
@@ -26,6 +40,7 @@ export default function Sobre() {
 
 
     return (
+        <ScrollView>
         <View style={styles.container}>
             <Text style={styles.title}>Lista de Contatos </Text>
             {contatos.length > 0 ? (
@@ -34,11 +49,13 @@ export default function Sobre() {
                         <Text>{contato.nome}</Text>
                         <Text>{contato.telefone}</Text>
                     </View>
+                    
                 ))
             ) : (
                 <Text style={styles.noContacts}> Nenhum contato disponível</Text>
             )}
         </View>
+    </ScrollView>
     )
 }
 
